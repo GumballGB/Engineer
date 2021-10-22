@@ -52,3 +52,96 @@ else {
   */
   delay(50);  
 }
+
+
+
+/////////////////////////CLASS CHALLENGE///////////////////
+
+#include <Servo.h>
+Servo leftservo;  
+Servo rightservo;  
+const int pingPin = 5; // Trigger Pin of Ultrasonic Sensor
+const int echoPin = 6;// Echo Pin of Ultrasonic Sensor
+void setup() {
+  leftservo.attach(9);  
+  rightservo.attach(10);
+   //set up the Serial
+  Serial.begin(9600);
+  //setupt the pin modes  
+  pinMode(pingPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  leftservo.write(90);
+  rightservo.write(90);
+}
+
+
+
+void loop() {
+  leftservo.attach(9);  
+  rightservo.attach(10);
+   //set up the Serial
+  Serial.begin(9600);
+  //setupt the pin modes  
+  pinMode(pingPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  long duration;  
+  //clear the ping pin
+  digitalWrite(pingPin, LOW);
+  delayMicroseconds(2);
+  //send the 10 microsecond trigger
+  digitalWrite(pingPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(pingPin, LOW);
+  //get the pulse duration in microseconds
+  duration = pulseIn(echoPin, HIGH);
+  int distance = duration*0.034/2;
+  Serial.println(distance);
+
+while(distance < 150) 
+  int distance = (duration*0.034/2);
+  {
+  if (distance > 110) {
+    leftservo.write(140);
+    rightservo.write(0);
+    delay(50);
+    Serial.println("Too Far");
+  }
+  else if (distance < 110) {
+    leftservo.write(180);
+    rightservo.write(45);
+    delay(25);
+    Serial.println("Too Close");
+  }
+  else {
+    leftservo.write(150);
+    rightservo.write(10);
+    delay(25);
+  }
+  }
+Serial.println("Wall Vanished");
+  delay(50); 
+//WHILE LOOP WAS CREATED TO FORCE THE ROBOT TO BREAK WHEN THE FIRST WALL DISSAPEARS.
+  leftservo.write(180);
+  rightservo.write(90);
+  delay(3000);
+//ROBOT TURNING SINCE THE WHILE LOOP WAS BROKEN
+if (distance > 70) {
+   leftservo.write(140);
+   rightservo.write(0);
+   delay(50);
+   Serial.println("way too Far");
+  }
+ else if (distance < 70) {
+   leftservo.write(180);
+   rightservo.write(45);
+   delay(25);
+   Serial.println("way too Close");
+  }
+ else {
+   leftservo.write(150);
+   rightservo.write(10);
+   delay(25);
+  }
+//NO WHILE LOOP WAS REQUIRED SINCE IT'S THE LAST COMMAND. BOONLEAN STATEMENT IS BACK. (It's now 70cm).
+}
+
