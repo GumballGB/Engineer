@@ -62,6 +62,7 @@ Servo leftservo;  // Servo Name
 Servo rightservo; // Servo Name
 const int pingPin = 5; // Trigger Pin of Ultrasonic Sensor
 const int echoPin = 6; // Echo Pin of Ultrasonic Sensor
+double distance;
 
 void Turn() //This function is the turning tide
 {
@@ -71,7 +72,8 @@ void Turn() //This function is the turning tide
   delay(50);
 }
 
-void Straight() {
+void Straight() //This function just makes it go straight
+{
   Serial.println("Alligning...");
   leftservo.write(120);
   rightservo.write(60);
@@ -96,49 +98,29 @@ void StaterFuel() //This function identities the pins
 
 void Mileage() //This function sets up duration
 {
-  long duration;  
+  double duration;  
   digitalWrite(pingPin, LOW);
   delayMicroseconds(2); //send the 10 microsecond trigger
   digitalWrite(pingPin, HIGH);
   delayMicroseconds(10);
   digitalWrite(pingPin, LOW); //get the pulse duration in microseconds
   duration = pulseIn(echoPin, HIGH); 
-  long distance; //clear the ping pin
   distance = (duration*0.034/2); //converts duration to time
   //Serial.println(distance); //Used for debugging
 }
 
+
 void setup() {
   StaterFuel();
-  //Mileage();
-  //The if statement does not recognize what's below...
-  long duration;  
-  digitalWrite(pingPin, LOW);
-  delayMicroseconds(2); //send the 10 microsecond trigger
-  digitalWrite(pingPin, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(pingPin, LOW); //get the pulse duration in microseconds
-  duration = pulseIn(echoPin, HIGH); 
-  long distance; //clear the ping pin
-  distance = (duration*0.034/2); //converts duration to distance
-  Serial.println(distance);
+  Mileage();
+  //Serial.println(distance); //Used for debugging
   //This should be under the Mileage fun ^^^
 
   while(distance < 195) {
     if (distance > 110) 
     { 
-      //Again, this should be recognized by the Mileage() fun
-      long duration;  
-      digitalWrite(pingPin, LOW);
-      delayMicroseconds(2); //send the 10 microsecond trigger
-      digitalWrite(pingPin, HIGH);
-      delayMicroseconds(10);
-      digitalWrite(pingPin, LOW); //get the pulse duration in microseconds
-      duration = pulseIn(echoPin, HIGH); 
-      long distance; //clear the ping pin
-      distance = (duration*0.034/2); //converts duration to time
-      //Above should be collapsed
-      
+      Mileage();
+      //
       leftservo.write(140);
       rightservo.write(0);
       delay(50);
@@ -148,15 +130,7 @@ void setup() {
     }
     else if (distance < 110) 
     { 
-      long duration;  
-      digitalWrite(pingPin, LOW);
-      delayMicroseconds(2); //send the 10 microsecond trigger
-      digitalWrite(pingPin, HIGH);
-      delayMicroseconds(10);
-      digitalWrite(pingPin, LOW); //get the pulse duration in microseconds
-      duration = pulseIn(echoPin, HIGH); 
-      long distance; //clear the ping pin
-      distance = (duration*0.034/2); //converts duration to time
+      Mileage();
       //
       leftservo.write(180);
       rightservo.write(45);
@@ -166,19 +140,10 @@ void setup() {
     }
     else 
     { 
-      //Under the Mileage func
-      long duration;  
-      digitalWrite(pingPin, LOW);
-      delayMicroseconds(2); //send the 10 microsecond trigger
-      digitalWrite(pingPin, HIGH);
-      delayMicroseconds(10);
-      digitalWrite(pingPin, LOW); //get the pulse duration in microseconds
-      duration = pulseIn(echoPin, HIGH); 
-      long distance; //clear the ping pin
-      distance = (duration*0.034/2); //converts duration to time
+      Mileage();
       //
       leftservo.write(150);
-      rightservo.write(10);
+      rightservo.write(30);
       delay(25);
     }
   }
@@ -189,18 +154,9 @@ while(distance < 100) {
   //
   if (distance > 70) 
     { 
-      //Again, this should be recognized by the Mileage() fun
-      long duration;  
-      digitalWrite(pingPin, LOW);
-      delayMicroseconds(2); //send the 10 microsecond trigger
-      digitalWrite(pingPin, HIGH);
-      delayMicroseconds(10);
-      digitalWrite(pingPin, LOW); //get the pulse duration in microseconds
-      duration = pulseIn(echoPin, HIGH); 
-      long distance; //clear the ping pin
-      distance = (duration*0.034/2); //converts duration to time
-      //Above should be collapsed
       
+      Mileage();
+      //
       leftservo.write(140);
       rightservo.write(0);
       delay(50);
@@ -210,15 +166,7 @@ while(distance < 100) {
     }
     else if (distance < 70) 
     { 
-      long duration;  
-      digitalWrite(pingPin, LOW);
-      delayMicroseconds(2); //send the 10 microsecond trigger
-      digitalWrite(pingPin, HIGH);
-      delayMicroseconds(10);
-      digitalWrite(pingPin, LOW); //get the pulse duration in microseconds
-      duration = pulseIn(echoPin, HIGH); 
-      long distance; //clear the ping pin
-      distance = (duration*0.034/2); //converts duration to time
+      Mileage();
       //
       leftservo.write(180);
       rightservo.write(45);
@@ -228,16 +176,7 @@ while(distance < 100) {
     }
     else 
     { 
-      //Under the Mileage func
-      long duration;  
-      digitalWrite(pingPin, LOW);
-      delayMicroseconds(2); //send the 10 microsecond trigger
-      digitalWrite(pingPin, HIGH);
-      delayMicroseconds(10);
-      digitalWrite(pingPin, LOW); //get the pulse duration in microseconds
-      duration = pulseIn(echoPin, HIGH); 
-      long distance; //clear the ping pin
-      distance = (duration*0.034/2); //converts duration to time
+      Mileage();
       //
       leftservo.write(150);
       rightservo.write(10);
