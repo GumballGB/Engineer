@@ -71,6 +71,14 @@ void Turn() //This function is the turning tide
   delay(50);
 }
 
+void Straight() {
+  Serial.println("Alligning...");
+  leftservo.write(120);
+  rightservo.write(60);
+  delay(2000);
+
+}
+
 
 void StaterFuel() //This function identities the pins
 {
@@ -176,9 +184,72 @@ void setup() {
   }
   Turn();
     delay(50);
-//while(distance > Whatever)
-//if Statements
+while(distance < 100) {
+  Straight(); //Straightening the bot a bit
+  //
+  if (distance > 70) 
+    { 
+      //Again, this should be recognized by the Mileage() fun
+      long duration;  
+      digitalWrite(pingPin, LOW);
+      delayMicroseconds(2); //send the 10 microsecond trigger
+      digitalWrite(pingPin, HIGH);
+      delayMicroseconds(10);
+      digitalWrite(pingPin, LOW); //get the pulse duration in microseconds
+      duration = pulseIn(echoPin, HIGH); 
+      long distance; //clear the ping pin
+      distance = (duration*0.034/2); //converts duration to time
+      //Above should be collapsed
+      
+      leftservo.write(140);
+      rightservo.write(0);
+      delay(50);
+      Serial.println("Get Closer");
+      Serial.println(distance);
+      //Serial.println("A"); //Debugging
+    }
+    else if (distance < 70) 
+    { 
+      long duration;  
+      digitalWrite(pingPin, LOW);
+      delayMicroseconds(2); //send the 10 microsecond trigger
+      digitalWrite(pingPin, HIGH);
+      delayMicroseconds(10);
+      digitalWrite(pingPin, LOW); //get the pulse duration in microseconds
+      duration = pulseIn(echoPin, HIGH); 
+      long distance; //clear the ping pin
+      distance = (duration*0.034/2); //converts duration to time
+      //
+      leftservo.write(180);
+      rightservo.write(45);
+      delay(50);
+      Serial.println(distance); //Debugging
+      Serial.println("Get Further");
+    }
+    else 
+    { 
+      //Under the Mileage func
+      long duration;  
+      digitalWrite(pingPin, LOW);
+      delayMicroseconds(2); //send the 10 microsecond trigger
+      digitalWrite(pingPin, HIGH);
+      delayMicroseconds(10);
+      digitalWrite(pingPin, LOW); //get the pulse duration in microseconds
+      duration = pulseIn(echoPin, HIGH); 
+      long distance; //clear the ping pin
+      distance = (duration*0.034/2); //converts duration to time
+      //
+      leftservo.write(150);
+      rightservo.write(10);
+      delay(25);
+
+  }
+Serial.println("Goodnight");
+
 }
+
+}
+
 void loop() {
   
   }  
