@@ -69,8 +69,25 @@ void Turn() //This function is the turning tide
   Serial.println("Wall Vanished, Let's Turn");
   leftservo.write(180);
   rightservo.write(90);
-  delay(5000);
+  delay(4000);
   Serial.println(distance);
+}
+
+void Scan() //This function actively scans
+{
+  Serial.println("Scanning for a new wall");
+  leftservo.write(180);
+  rightservo.write(90);
+  delay(4000);
+  leftservo.write(90);
+  rightservo.write(180);
+  delay(4000);
+  Serial.println(distance);
+  if (distance > 70)
+  //This part if Straight function
+  leftservo.write(120);
+  rightservo.write(60);
+  delay(2000);
 }
 
 void Straight() //This function just makes it go straight
@@ -116,7 +133,7 @@ void setup() {
   Mileage();
   //Serial.println(distance); //Used for debugging
   //This should be under the Mileage fun ^^^
-
+  //FIRST GEAR, GRABBING THE COINS UNTIL THE WALL VANISHES
   while(distance < 195) {
     if (distance > 110) 
     { 
@@ -148,10 +165,46 @@ void setup() {
       delay(25);
     }
   }
-  Straight();
-  Turn();
-  Mileage();
+  Serial.println("I can't detect a wall!");
+
+  //SECOND GEAR, IF WALL VANISHED SCAN FOR MORE
+  //ROBOT WILL PIVOT FOR A NEW WALL, IF NOT FOUND IT WILL JUST MOVE FORWARD
+while (distance > 70)
+Scan();
+{
+if (distance > 70)
+    Serial.println("Eh");
     
+    /*{
+        Mileage();
+        leftservo.write(180);
+        rightservo.write(90);
+        delay(2000);
+        leftservo.write(90);
+        rightservo.write(180);
+        delay(2000);
+        Serial.println("Where's the wall?!");
+        Serial.println(distance);
+        //Serial.println("A"); //Debugging
+    }
+    */
+}
+/*else (distance < 70)
+    {
+        Mileage();
+        leftservo.write(0);
+        rightservo.write(140);
+        delay(50);
+        Serial.println("Now I'm too close!");
+        Serial.println(distance);
+        //Serial.println("A"); //Debugging
+    }
+  //Straight();
+  //Turn();
+  //Mileage();
+
+//THIRD GEAR, ROBOT HAS TO DETECT A NEW WALL   
+/*
 while(distance < 200) {
   Straight(); //Straightening the bot a bit
   //
@@ -189,7 +242,7 @@ while(distance < 200) {
 Serial.println("Goodnight");
 
 }
-
+*/
 }
 
 void loop() {
