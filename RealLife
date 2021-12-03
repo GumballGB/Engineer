@@ -33,7 +33,7 @@ void Mileage() //This function sets up duration
 
 void Scan() //This function actively scans
 {
-  while (distance > 2000) {
+  while (distance > 150) {
     Mileage();
     leftservo.write(60);
     rightservo.write(60);
@@ -58,7 +58,7 @@ void Scan() //This function actively scans
 
 void Snake() //This function will move the robot like a snake once it detects a wall
 {
-  while(distance < 200) 
+  while(distance < 150) 
   {
     if (distance > 60) 
     { 
@@ -92,11 +92,11 @@ void loop()
   Mileage();
   Serial.println(String(distance));
   //
-  if (distance < 200)
+  if (distance < 150)
   {
     Snake();
   }
-  else if (distance > 2000)
+  else if (distance > 150)
   {
     Scan();
   }
