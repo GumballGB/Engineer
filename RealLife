@@ -5,7 +5,7 @@ const int pingPin = 5; // Trigger Pin of Ultrasonic Sensor
 const int echoPin = 6; // Echo Pin of Ultrasonic Sensor
 double distance;
 
-void StaterFuel() //This function identities the pins
+void Starter() //This function identities the pins
 {
   leftservo.attach(9);  
   rightservo.attach(10);
@@ -16,10 +16,9 @@ void StaterFuel() //This function identities the pins
   pinMode(echoPin, INPUT);
   leftservo.write(90);
   rightservo.write(90);
-  Serial.println("Engine Ready");
 }
 
-void Mileage() //This function sets up duration
+void Signal() //This function sets up duration. It will be used to remind the other functions of duration.
 {
   double duration;  
   digitalWrite(pingPin, LOW);
@@ -31,19 +30,15 @@ void Mileage() //This function sets up duration
   distance = (duration*0.034/2); //converts duration to time
 }
 
-void Scan() //This function actively scans
+void Scan() //This function is only active when a wall is not detected. It will actively scan for a new one by pivoting and slowly moving forward.
 {
-  while (distance > 150) {
-    Mileage();
+  while (distance > 150) // VALUE SHOULD BE THE SAME **
+  {
+    Signal();
     leftservo.write(60);
     rightservo.write(60);
     delay(400);
-    /*
-    leftservo.write(90);
-    rightservo.write(90);
-    delay(1000);
-    */
-    
+    // Robot does a mandatory pivot to detect a wall.
     if (distance > 2000)
     {
       leftservo.write(120);
@@ -52,26 +47,27 @@ void Scan() //This function actively scans
       leftservo.write(120);
       rightservo.write(60);
       delay(600);
+      // If a wall was not detected, then this "if" statement reverts its pivot and makes the robot move forward.
     }
   }
 }
 
-void Snake() //This function will move the robot like a snake once it detects a wall
+void Snake() //This function is active when a wall is detected. The robot will move in a nearly straight line in regards to the distance inserted.
 {
-  while(distance < 150) 
+  while(distance < 150) // VALUE SHOULD BE THE SAME **
   {
-    if (distance > 60) 
+    if (distance > 60) // Value should be same*
     { 
-      Mileage();
+      Signal();
       //
       leftservo.write(80);
       rightservo.write(70);
       //scan()
       delay(25);
     }
-    else if (distance < 60) 
+    else if (distance < 60) // Value should be the same*
     { 
-      Mileage();
+      Signal();
       //
       leftservo.write(130);
       rightservo.write(80);
@@ -79,6 +75,8 @@ void Snake() //This function will move the robot like a snake once it detects a 
     }
   }
 }
+//It is called Snake() because the robot used to slither instead of moving very straight. Both of the while() statement must share the same value.
+//They are what separates between scanning and slithering. The if() in the snake() is the desired distance.
 
 void setup(){
   
@@ -87,18 +85,17 @@ void setup(){
 
 void loop() 
 {
-  
-  StaterFuel();
-  Mileage();
-  Serial.println(String(distance));
+  Starter();
+  Signal();
   //
-  if (distance < 150)
+  if (distance < 150) // VALUE SHOULD BE THE SAME**
   {
     Snake();
   }
-  else if (distance > 150)
+  else if (distance > 150) // VALUE SHOULD BE THE SAME** 
   {
     Scan();
   }
   
 }  
+//The if() statements are joined by the while() statements. It's just much cleaner this way.
