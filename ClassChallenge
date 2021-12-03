@@ -6,6 +6,7 @@ const int echoPin = 6; // Echo Pin of Ultrasonic Sensor
 double distance;
 // THIS CODE ONLY WORKS FOR THE VIRTUAL LAB AND NOT FOR THE REAL ONE.
 // THE ONE FOR REAL LIFE IS COMPLETELY DIFFERENT.
+// Works on all 4 challenges! Don't need to change anything.
 
 void Starter() //This function identities the pins
 {
@@ -36,13 +37,13 @@ void Mileage() //This function sets up duration
 
 void Scan() //This function actively scans until it detects a new wall.
 {
-  while (distance > 150) {
+  while (distance > 160) {
     Mileage();
     Serial.println("Scanning for a new wall");
     leftservo.write(180);
     rightservo.write(180);
     delay(2000);
-    if (distance > 130)
+    if (distance > 160)
     {
       leftservo.write(0);
       rightservo.write(0);
@@ -99,12 +100,12 @@ void setup()
 Scan();
 Serial.println("Wall Found");
 //THIRD GEAR, ROBOT HAS TO DETECT A NEW WALL   
-while(distance < 150) {
+while(distance < 160) {
   if (distance > 70) 
     { 
       Mileage();
       //
-      leftservo.write(140);
+      leftservo.write(130);
       rightservo.write(0);
       delay(50);
       Serial.println("Get Closer");
@@ -133,6 +134,4 @@ while(distance < 150) {
 Serial.println("Goodnight");
 } //The bracket closes the entire void setup()
 
-void loop() {
-  
-}  
+void loop() {}
