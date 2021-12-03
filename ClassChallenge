@@ -4,8 +4,37 @@ Servo rightservo; // Servo Name
 const int pingPin = 5; // Trigger Pin of Ultrasonic Sensor
 const int echoPin = 6; // Echo Pin of Ultrasonic Sensor
 double distance;
+// THIS CODE ONLY WORKS FOR THE VIRTUAL LAB AND NOT FOR THE REAL ONE.
+// THE ONE FOR REAL LIFE IS COMPLETELY DIFFERENT.
 
-void Scan() //This function actively scans
+void Starter() //This function identities the pins
+{
+  leftservo.attach(9);  
+  rightservo.attach(10);
+  //set up the Serial
+  Serial.begin(9600);
+  //setupt the pin modes  
+  pinMode(pingPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  leftservo.write(90);
+  rightservo.write(90);
+  Serial.println("Engine Ready");
+}
+
+void Mileage() //This function sets up duration
+//In the RL code. Mileage() is called Signal().
+{
+  double duration;  
+  digitalWrite(pingPin, LOW);
+  delayMicroseconds(2); //send the 10 microsecond trigger
+  digitalWrite(pingPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(pingPin, LOW); //get the pulse duration in microseconds
+  duration = pulseIn(echoPin, HIGH); 
+  distance = (duration*0.034/2); //converts duration to time
+}
+
+void Scan() //This function actively scans until it detects a new wall.
 {
   while (distance > 150) {
     Mileage();
@@ -26,36 +55,12 @@ void Scan() //This function actively scans
   }
 }
 
-void StaterFuel() //This function identities the pins
-{
-  leftservo.attach(9);  
-  rightservo.attach(10);
-  //set up the Serial
-  Serial.begin(9600);
-  //setupt the pin modes  
-  pinMode(pingPin, OUTPUT);
-  pinMode(echoPin, INPUT);
-  leftservo.write(90);
-  rightservo.write(90);
-  Serial.println("Engine Ready");
-}
-
-void Mileage() //This function sets up duration
-{
-  double duration;  
-  digitalWrite(pingPin, LOW);
-  delayMicroseconds(2); //send the 10 microsecond trigger
-  digitalWrite(pingPin, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(pingPin, LOW); //get the pulse duration in microseconds
-  duration = pulseIn(echoPin, HIGH); 
-  distance = (duration*0.034/2); //converts duration to time
-}
-
 void setup() 
 {
-  StaterFuel();
+  Starter();
   Mileage();
+  Scan();
+  Serial.println("Wall Found");
   //FIRST GEAR, GRABBING THE COINS UNTIL THE WALL VANISHES
   while(distance < 195) {
     if (distance > 110) 
